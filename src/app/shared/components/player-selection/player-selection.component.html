@@ -1,0 +1,31 @@
+@if (type()) {
+<div
+  class="w-full h-full rounded-full flex justify-center items-center border-b-4 relative {{
+    bgColor()
+  }} {{ bgBorderColor() }}"
+>
+  @if (showBubbles()) {
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] z-[1]"
+    style="pointer-events: none"
+  >
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-white opacity-5 rounded-full"
+    ></div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white opacity-5 rounded-full"
+    ></div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 bg-white opacity-5 rounded-full"
+    ></div>
+  </div>
+  }
+  <div
+    class="w-4/5 h-4/5 bg-white rounded-full p-3 flex justify-center items-center border-t-4 relative z-[2]"
+  >
+    <img [src]="image()" class="w-4/5 h-4/5" />
+  </div>
+</div>
+} @else {
+<div class="w-full h-full bg-neutral-dark opacity-20 rounded-full"></div>
+}
