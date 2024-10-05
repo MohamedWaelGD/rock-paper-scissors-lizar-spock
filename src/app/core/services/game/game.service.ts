@@ -3,6 +3,8 @@ import { BehaviorSubject, delay, of, Subject } from 'rxjs';
 import { Player } from '../../classes/player.class';
 import { GameStates } from '../../enums/game-state.enum';
 import { PlayerSelections } from '../../enums/player-selection.enum';
+import { MatchResult } from '../../enums/match-result.enum';
+import { GameModes } from '../../enums/game-modes.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +18,8 @@ export class GameService {
   private _gameState = new BehaviorSubject<GameStates>(
     GameStates.playerSelectState
   );
-  private _gameResult = new Subject<number>();
+  private _gameMode = new BehaviorSubject<GameModes>(GameModes['3-based']);
+  private _lastGameResult = new BehaviorSubject<number | null>(null);
 
   get player() {
     return this._humanPlayer.value;
@@ -34,12 +37,30 @@ export class GameService {
     return this._gameState.asObservable();
   }
 
-  get gameResult$() {
-    return this._gameResult.asObservable();
+  get lastGameResult() {
+    return this._lastGameResult.value;
+  }
+
+  get lastGameResult$() {
+    return this._lastGameResult.asObservable();
   }
 
   get score$() {
     return this._score.asObservable();
+  }
+
+  get matchResult() {
+    if (this.gameState == GameStates.endGameState) {
+      if (this._lastGameResult.value == 0) return MatchResult.draw;
+      else if (this._lastGameResult.value == 1) return MatchResult.playerWin;
+      else return MatchResult.playerLose;
+    }
+
+    return null;
+  }
+
+  get gameModes$() {
+    return this._gameMode.asObservable();
   }
 
   constructor() {
@@ -47,18 +68,28 @@ export class GameService {
       if (playerSelection) {
         this._gameState.next(GameStates.aiSelectState);
         setTimeout(() => {
-          this._aiPlayer.value.randomSelect();
+          this._aiPlayer.value.randomSelect(this._gameMode.value);
 
           setTimeout(() => {
             this._gameState.next(GameStates.endGameState);
             const matchResult = this.checkPlayerMatch();
             const newScore = this._score.value + matchResult;
             this._score.next(newScore >= 0 ? newScore : 0);
-            this._gameResult.next(matchResult);
+            this._lastGameResult.next(matchResult);
           }, this.RESULT_WAIT_TIME_MS);
         }, this.AI_WAIT_TIME_MS);
       }
     });
+  }
+
+  toggleGameMode() {
+    this._gameMode.next(this._gameMode.value == GameModes['3-based'] ? GameModes['5-based'] : GameModes['3-based']);
+  }
+
+  resetPlayer() {
+    this.player.resetPlayerSelect();
+    this.ai.resetPlayerSelect();
+    this._gameState.next(GameStates.playerSelectState);
   }
 
   private checkPlayerMatch() {
@@ -130,11 +161,5 @@ export class GameService {
     }
 
     return 0;
-  }
-
-  resetPlayer() {
-    this.player.resetPlayerSelect();
-    this.ai.resetPlayerSelect();
-    this._gameState.next(GameStates.playerSelectState);
   }
 }

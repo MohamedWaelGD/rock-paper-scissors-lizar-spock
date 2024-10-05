@@ -1,0 +1,11 @@
+<svg class="absolute top-0 left-0 w-full h-full" style="pointer-events: none;">
+    @for (line of svgLines; track $index) {
+    <line
+      [attr.x1]="line.x1"
+      [attr.y1]="line.y1"
+      [attr.x2]="line.x2"
+      [attr.y2]="line.y2"
+      style="stroke: hsla(0, 0%, 0%, 0.3); stroke-width: 8"
+    />
+    }
+  </svg>

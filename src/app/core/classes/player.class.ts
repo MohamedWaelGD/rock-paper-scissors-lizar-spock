@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { PlayerSelections } from '../enums/player-selection.enum';
+import { GameModes } from '../enums/game-modes.enum';
 
 export class Player {
   private _playerSelected = new BehaviorSubject<PlayerSelections | null>(null);
@@ -20,9 +21,10 @@ export class Player {
     this._playerSelected.next(null);
   }
 
-  randomSelect() {
+  randomSelect(gameMode: GameModes) {
     const allGamePlays = Object.values(PlayerSelections);
-    const randomIndex = Math.floor(Math.random() * allGamePlays.length);
-    this.setPlayerSelect(allGamePlays[randomIndex]);
+    const randomIndex5Based = Math.floor(Math.random() * allGamePlays.length);
+    const randomIndex3Based = Math.floor(Math.random() * 3);
+    this.setPlayerSelect(allGamePlays[gameMode == GameModes['5-based'] ? randomIndex5Based : randomIndex3Based]);
   }
 }

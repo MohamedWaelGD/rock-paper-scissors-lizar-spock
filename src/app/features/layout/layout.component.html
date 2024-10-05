@@ -1,10 +1,12 @@
-<div class="min-h-screen w-screen bg-layout">
-    <div class="container p-8 mx-auto flex flex-col gap-8">
+<div class="bg-layout">
+    <div class="min-h-screen w-screen container mx-auto p-8 flex flex-col gap-8">
         <app-header-score class="w-full h-fit"></app-header-score>
         @if (gameState() == gameStates.aiSelectState || gameState() == gameStates.endGameState) {
             <app-game-play class="w-full" (palyAgain)="resetGame()"></app-game-play>
         } @else { 
-            <app-game-selection class="w-full"></app-game-selection>
+            <app-game-selection></app-game-selection>
         }
     </div>
+    <app-rules></app-rules>
+    <app-game-mode-switcher></app-game-mode-switcher>
 </div>

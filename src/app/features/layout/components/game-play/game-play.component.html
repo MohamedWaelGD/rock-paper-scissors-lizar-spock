@@ -1,9 +1,22 @@
 <div class="flex justify-center items-center gap-8">
     <div class="flex flex-col justify-center items-center gap-8 text-center">
-        <h6 class="font-medium">YOU PICKED</h6>
-        <app-player-selection [type]="playerSelection()!" class="w-52 h-52" [showBubbles]="matchResultState() == matchResults.playerWin"></app-player-selection>
+        <h6 id="you-picked" class="font-medium">YOU PICKED</h6>
+        <app-player-selection id="player" [type]="playerSelection()!" class="w-32 h-32 md:w-52 md:h-52" [showBubbles]="matchResultState() == matchResults.playerWin"></app-player-selection>
     </div>
-    <div class="flex flex-col justify-center items-center gap-4">
+    <div id="score-pc" class="hidden md:block">
+        <ng-container [ngTemplateOutlet]="score"></ng-container>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-8 text-center">
+        <h6 id="house-picked" class="font-medium">THE HOUSE PICKED</h6>
+        <app-player-selection #playerAi id="ai" [type]="aiSelection()!" class="w-32 h-32 md:w-52 md:h-52" [showBubbles]="matchResultState() == matchResults.playerLose"></app-player-selection>
+    </div>
+</div>
+<div id="score-mobile" class="block md:hidden">
+    <ng-container [ngTemplateOutlet]="score"></ng-container>
+</div>
+
+<ng-template #score>
+    <div class="flex flex-col justify-center items-center gap-4 text-nowrap">
         @if (showMatchResult()) {
             @if (matchResultState() == matchResults.draw) {
                 <h5 class="text-white">DRAW</h5>
@@ -16,8 +29,4 @@
             <button class="px-8 py-2 bg-white text-black font-medium hover:bg-gray-300 rounded" (click)="palyAgain.emit()">PLAY AGAIN</button>
         }
     </div>
-    <div class="flex flex-col justify-center items-center gap-8 text-center">
-        <h6 class="font-medium">THE HOUSE PICKED</h6>
-        <app-player-selection [type]="aiSelection()!" class="w-52 h-52" [showBubbles]="matchResultState() == matchResults.playerLose"></app-player-selection>
-    </div>
-</div>
+</ng-template>

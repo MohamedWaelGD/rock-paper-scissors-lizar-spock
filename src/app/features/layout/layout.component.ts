@@ -5,11 +5,13 @@ import { GameService } from '../../core/services/game/game.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GameStates } from '../../core/enums/game-state.enum';
 import { GamePlayComponent } from "./components/game-play/game-play.component";
+import { RulesComponent } from "../../shared/components/rules/rules.component";
+import { GameModeSwitcherComponent } from "../../shared/components/game-mode-switcher/game-mode-switcher.component";
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [HeaderScoreComponent, GameSelectionComponent, GamePlayComponent],
+  imports: [HeaderScoreComponent, GameSelectionComponent, GamePlayComponent, RulesComponent, GameModeSwitcherComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
