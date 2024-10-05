@@ -15,7 +15,7 @@ import {
   templateUrl: './draw-cycle-lines.component.html',
   styleUrl: './draw-cycle-lines.component.scss',
 })
-export class DrawCycleLinesComponent implements OnInit, AfterViewInit {
+export class DrawCycleLinesComponent implements AfterViewInit {
   public elementPoints = input.required<string>();
 
   private _container = inject(ElementRef);
@@ -27,11 +27,9 @@ export class DrawCycleLinesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.drawLines();
-  }
-
-  ngOnInit(): void {
-    this.drawLines();
+    setTimeout(() => {
+      this.drawLines();
+    })
   }
 
   drawLines() {
